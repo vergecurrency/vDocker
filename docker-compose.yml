@@ -1,0 +1,8 @@
+version: '3'
+services:
+    verge-core:
+        build: .
+        ports:
+            - '21102:21102' #P2P port
+            - '20102:20102' #RPC port
+        image: 'marpme/verge-core'
