@@ -13,7 +13,7 @@ services:
         command: mongod --smallfiles --logpath=/dev/null # --quiet
 
     verge-core:
-        build: ./core
+        image: nano:latest
         volumes:
             - ./data/verge:/data/verge
         ports:

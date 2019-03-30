@@ -1,11 +1,7 @@
 FROM ubuntu:latest
+MAINTAINER marplezDEV
+
 ARG BRANCH
-
-RUN PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" | sed "s|::|:|g")
-RUN PATH=$PATH:/usr/lib/llvm-6.0/bin/
-RUN export PATH
-
-WORKDIR /app
 
 # Basic env setup
 RUN apt-get update
@@ -14,12 +10,10 @@ RUN add-apt-repository ppa:bitcoin/bitcoin
 
 # install dependecies
 RUN apt-get -y install libssl-dev libevent-dev libboost-all-dev \
-    && apt-get -y install zlib1g-dev libseccomp-dev libcap-dev libncap-dev \
-    && apt-get -y install software-properties-common \
-    && apt-get -y install libdb4.8-dev libdb4.8++-dev \
-    && apt-get -y install libminiupnpc-dev \
-    && apt-get -y install libzmq3-dev
+    zlib1g-dev libseccomp-dev libcap-dev libncap-dev \
+    software-properties-common libdb4.8-dev libdb4.8++-dev libminiupnpc-dev libzmq3-dev gosu
 
+WORKDIR /app
 RUN git clone https://github.com/vergecurrency/VERGE.git verge
 
 # switch to the freshly cloned verge project & compile it
@@ -29,8 +23,13 @@ RUN if [ -z "${BRANCH}" ] ; then echo "Branch not provided [default: develop]" &
 # compile verged fresh
 RUN ./autogen.sh
 RUN ./configure --disable-bench --disable-gui --disable-tests --disable-gui-tests --disable-dependency-tracking
-RUN make -j3
+RUN make -j8
 
-WORKDIR /app/verge/src
+ENV VERGE_DATA=/data/verge
+ENV PATH=$PATH:/app/verge/src
+RUN echo $PATH
 
-CMD [ "./verged", "-server=1 -rpcuser=test -rpcpassword=test -rpcallowip=127.0.0.1 -datadir=/data/verge" ]
+COPY docker-entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["verged"]
