@@ -12,10 +12,29 @@ services:
             - 27017:27017
         command: mongod --smallfiles --logpath=/dev/null # --quiet
 
-    verge-core:
-        image: nano:latest
-        volumes:
-            - ./data/verge:/data/verge
+    # verge-core:
+        # image: nano:latest
+        # volumes:
+            # - ./data/verge:/data/verge
+        # ports:
+            # - '21102:21102' #P2P port
+            # - '20102:20102' #RPC port
+        # command: 
+            # -printtoconsole
+            # -txindex=0
+            # -listen=1
+            # -server=1
+            # -irc=0
+            # -dnsseed=0
+            # -upnp=0
+            # -port=8332
+            # -rpcport=8333
+            # -rpcallowip=172.0.0.0/8
+            # -rpcbind=0.0.0.0
+            # -rpcuser=bitcorenodetest
+            # -rpcpassword=local321
+
+    api-core:
+        image: bitcore-node:latest
         ports:
-            - '21102:21102' #P2P port
-            - '20102:20102' #RPC port
+            - '3000:3000' #HTTP port
