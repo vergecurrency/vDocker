@@ -2,7 +2,6 @@ version: '3'
 services:
     mongodb:
         image: mongo:latest
-        container_name: "mongodb"
         environment:
             - MONGO_DATA_DIR=/data/db
             - MONGO_LOG_DIR=/dev/null
@@ -12,29 +11,26 @@ services:
             - 27017:27017
         command: mongod --smallfiles --logpath=/dev/null # --quiet
 
-    # verge-core:
-        # image: nano:latest
-        # volumes:
-            # - ./data/verge:/data/verge
-        # ports:
-            # - '21102:21102' #P2P port
-            # - '20102:20102' #RPC port
-        # command: 
-            # -printtoconsole
-            # -txindex=0
-            # -listen=1
-            # -server=1
-            # -irc=0
-            # -dnsseed=0
-            # -upnp=0
-            # -port=8332
-            # -rpcport=8333
-            # -rpcallowip=172.0.0.0/8
-            # -rpcbind=0.0.0.0
-            # -rpcuser=bitcorenodetest
-            # -rpcpassword=local321
+    core:
+        image: nano:latest
+        volumes:
+            - ./data/verge:/data/verge
+        ports:
+            - '21102:21102' #RPC port
+            - '20102:20102' #P2P port
+        command: 
+            -txindex=0
+            -listen=1
+            -server=1
+            -port=20102
+            -rpcport=21102
+            -rpcuser=bitcorenodetest
+            -rpcpassword=local321
 
     api-core:
         image: bitcore-node:latest
+        environment:
+            - DB_HOST=mongodb
+            - BITCORE_CONFIG_PATH=/usr/src/app/bitcore.config.json
         ports:
             - '3000:3000' #HTTP port
