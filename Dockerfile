@@ -24,8 +24,11 @@ WORKDIR /app/verge
 # compile verged fresh (no ui)
 RUN ./autogen.sh
 RUN ./configure --disable-bench --disable-tests --disable-gui-test --disable-gui
-RUN make -j4
+RUN make
 
 WORKDIR /app/verge/src
 
-CMD [ "./verged", "--server=1 -rpcuser=test -rpcpassword=test -rpcallowip=127.0.0.1" ]
+EXPOSE 20102
+EXPOSE 21102
+
+CMD [ "./verged", "--server=1 --listen=1 -rpcuser=RPCUSER -rpcpassword=RPCPASS -rpcallowip=127.0.0.1" ]
