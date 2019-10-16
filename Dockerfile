@@ -7,6 +7,7 @@ RUN apt-get update
 RUN apt-get -y install git
 RUN apt-get -y install build-essential libtool autotools-dev automake pkg-config bsdmainutils python3
 RUN git clone https://github.com/vergecurrency/VERGE.git verge
+RUN git checkout v5.3.1
 
 # install dependecies
 RUN apt-get -y install libssl-dev libevent-dev libboost-all-dev
