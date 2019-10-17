@@ -20,7 +20,7 @@ RUN apt-get -y install libzmq3-dev
 
 # switch to the freshly cloned verge project & compile it
 WORKDIR /app/verge
-RUN git checkout v5.3.1
+RUN git checkout master
 
 # compile verged fresh (no ui)
 RUN ./autogen.sh
