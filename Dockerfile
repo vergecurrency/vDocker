@@ -32,4 +32,4 @@ WORKDIR /app/verge/src
 EXPOSE 20102
 EXPOSE 21102
 
-CMD [ "./verged", "--server=1 --listen=1 -rpcuser=RPCUSER -rpcpassword=RPCPASS -rpcallowip=127.0.0.1" ]
+CMD [ "./verged", "-server=1 -listen=1 -rpcuser=RPCUSER -rpcpassword=RPCPASS -rpcallowip=0.0.0.0/0 -rpcbind=0.0.0.0" ]
