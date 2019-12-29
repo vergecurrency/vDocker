@@ -20,7 +20,7 @@ RUN apt-get -y install libzmq3-dev
 
 # switch to the freshly cloned verge project & compile it
 WORKDIR /app/verge
-RUN git checkout master
+RUN git fetch && git checkout v6.0.1
 
 # compile verged fresh (no ui)
 RUN ./autogen.sh
@@ -32,4 +32,4 @@ WORKDIR /app/verge/src
 EXPOSE 20102
 EXPOSE 21102
 
-CMD [ "./verged", "--server=1 --listen=1 -rpcuser=RPCUSER -rpcpassword=RPCPASS -rpcallowip=127.0.0.1" ]
+CMD [ "./verged", "-server=1 -listen=1 -rpcuser=RPCUSER -rpcpassword=RPCPASS -rpcallowip=0.0.0.0/0 -rpcbind=0.0.0.0" ]
